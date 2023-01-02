@@ -1,6 +1,6 @@
 import { defineApp } from "@pipedream/types";
 import { axios } from "@pipedream/platform";
-import { HttpRequestParams } from "../common/types";
+import { HttpRequestParams, OccasionResponse, Order } from "../common/types";
 
 export default defineApp({
   type: "app",
@@ -13,7 +13,7 @@ export default defineApp({
       };
     },
     _baseUrl() {
-      return "https://api.practitest.com/api/v2";
+      return "https://app.getoccasion.com/api/v1";
     },
     async _httpRequest({
       $ = this,
@@ -24,6 +24,12 @@ export default defineApp({
         auth: this._getAuth(),
         ...args,
       });
+    },
+    async getOrders(): Promise<Order[]> {
+      const { data }: OccasionResponse = await this._httpRequest({
+        url: "/orders",
+      });
+      return data;
     },
   },
 });
